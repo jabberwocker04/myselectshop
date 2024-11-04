@@ -5,9 +5,14 @@ import com.sparta.myselectshop.dto.ProductRequestDto;
 import com.sparta.myselectshop.dto.ProductResponseDto;
 import com.sparta.myselectshop.entity.Product;
 import com.sparta.myselectshop.entity.User;
+import com.sparta.myselectshop.entity.UserRoleEnum;
 import com.sparta.myselectshop.naver.dto.ItemDto;
 import com.sparta.myselectshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,16 +51,32 @@ public class ProductService {
     }
 
 
-    public List<ProductResponseDto> getProducts(User user) {
-        List<Product> productList = productRepository.findAllByUser(user); // var 명령어로 생성
+    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, Boolean isAsc) {
+        //페이징 처리를 위해 page, size, sortBy, isAsc가 추가 됌.
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort); // pageable 객체 만들어줌
 
-        List<ProductResponseDto> responseDtoList = new ArrayList<>();
+        UserRoleEnum userRoleEnum = user.getRole();
 
-        for (Product product : productList) { // iter(향상된 for문) 명령어로 생성
-            responseDtoList.add(new ProductResponseDto(product));
+        Page<Product> productList;
+
+        if(userRoleEnum == UserRoleEnum.USER) {
+            productList = productRepository.findAllByUser(user, pageable);
+        } else {
+            productList = productRepository.findAll(pageable);
         }
 
-        return responseDtoList;
+//        List<Product> productList = productRepository.findAllByUser(user); // var 명령어로 생성
+//
+//        List<ProductResponseDto> responseDtoList = new ArrayList<>();
+//
+//        for (Product product : productList) { // iter(향상된 for문) 명령어로 생성
+//            responseDtoList.add(new ProductResponseDto(product));
+//        }
+
+        return productList.map(ProductResponseDto::new); // map 메서드를 사용하여 Page타입에 들어있는 Product를 하나씩 돌리면서 ProductResponseDto가 생성된다.
+
 
     }
 
@@ -67,16 +88,16 @@ public class ProductService {
         product.updateByItemDto(itemDto);
     }
 
-    public List<ProductResponseDto> getAllProducts() { // 유저가 아니라 관리자로 들어온다면 실행될 수 있도록 그냥 getAllProducts를 해줌
-        List<Product> productList = productRepository.findAll(); // var 명령어로 생성
-
-        List<ProductResponseDto> responseDtoList = new ArrayList<>();
-
-        for (Product product : productList) { // iter(향상된 for문) 명령어로 생성
-            responseDtoList.add(new ProductResponseDto(product));
-        }
-
-        return responseDtoList;
-
-    }
+//    public List<ProductResponseDto> getAllProducts() { // 유저가 아니라 관리자로 들어온다면 실행될 수 있도록 그냥 getAllProducts를 해줌
+//        List<Product> productList = productRepository.findAll(); // var 명령어로 생성
+//
+//        List<ProductResponseDto> responseDtoList = new ArrayList<>();
+//
+//        for (Product product : productList) { // iter(향상된 for문) 명령어로 생성
+//            responseDtoList.add(new ProductResponseDto(product));
+//        }
+//
+//        return responseDtoList;
+//
+//    } // Page객체를 여기서도 만들어줘야하기 때문에 이것을 또 Pageable 객체를 만드는 것은 비효율적이므로 Pageable이 포함된 메서드에서 User인지 ADmin인지 구분
 }
