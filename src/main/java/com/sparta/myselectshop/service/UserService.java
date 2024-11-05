@@ -16,6 +16,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    //20241105 심화 강의 도중 application이 PasswordEncoder를 못 찾았다. 여러 방법을 찾아 보았는데, 모두 옳게 되어 있어서 보았더니
+    //build 되어있던 어플리케이션을 옮겨주면서 문제가 있었던 것 같다. clean->build하여 카카오 로그인 강의 부분은 해결되었다.
 
     // ADMIN_TOKEN
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";

@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableJpaAuditing
 @SpringBootApplication
-public class MyselectshopApplication {
+public class  MyselectshopApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyselectshopApplication.class, args);
