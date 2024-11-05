@@ -1,10 +1,7 @@
-package com.sparta.myselectshop.config;
+package com.sparta.myselectshop.security;
 
 
 import com.sparta.myselectshop.jwt.JwtUtil;
-import com.sparta.myselectshop.security.JwtAuthenticationFilter;
-import com.sparta.myselectshop.security.JwtAuthorizationFilter;
-import com.sparta.myselectshop.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

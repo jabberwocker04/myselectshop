@@ -50,7 +50,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-
+    @Transactional(readOnly = true) //product에서의 @ManyToOne의 지연로딩기능을 이용하기 위함
     public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, Boolean isAsc) {
         //페이징 처리를 위해 page, size, sortBy, isAsc가 추가 됌.
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
