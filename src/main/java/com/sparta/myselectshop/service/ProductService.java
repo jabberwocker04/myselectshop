@@ -117,6 +117,20 @@ public class ProductService {
 
     }
 
+    public Page<ProductResponseDto> getProductsInFolder(Long folderId, int page, int size, String sortBy, Boolean isAsc, User user) {
+
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort); // pageable 객체 만들어줌 || 페이징 처리 중복되서 위의 것 복붙함
+
+        Page<Product> productsList = productRepository.findAllByUserAndProductFolderList_FolderId(user, folderId, pageable);
+
+        Page<ProductResponseDto> responseDtoList = productsList.map(ProductResponseDto::new);
+
+        return responseDtoList;
+
+    }
+
 //    public List<ProductResponseDto> getAllProducts() { // 유저가 아니라 관리자로 들어온다면 실행될 수 있도록 그냥 getAllProducts를 해줌
 //        List<Product> productList = productRepository.findAll(); // var 명령어로 생성
 //
