@@ -31,15 +31,15 @@ public class FolderController {
         return folderService.getFolders(userDetails.getUser()); //로그인되어있으면 유저의 정보를 보내서 Folder 정보 조회
     }
 
-    @ExceptionHandler({IllegalArgumentException.class}) // 컨트롤러에서 발생한 예외를 처리하기 위해서 발생함.
-    public ResponseEntity<RestApiException> handleException(IllegalArgumentException ex) {
-        RestApiException restApiException = new RestApiException(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<>(
-                // HTTP body
-                restApiException,
-                // HTTP status code
-                HttpStatus.BAD_REQUEST
-        );
-    }
+//    @ExceptionHandler({IllegalArgumentException.class}) // 컨트롤러에서 발생한 예외를 처리하기 위해서 발생함.
+//    public ResponseEntity<RestApiException> handleException(IllegalArgumentException ex) {
+//        RestApiException restApiException = new RestApiException(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+//        return new ResponseEntity<>(
+//                // HTTP body
+//                restApiException,
+//                // HTTP status code
+//                HttpStatus.BAD_REQUEST
+//        );
+//    } -> GlobalExceptionHandler쪽으로 넘어갔으므로 주석처리함(필요 없어짐)
 
 }
