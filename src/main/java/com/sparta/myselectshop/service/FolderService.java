@@ -28,7 +28,7 @@ public class FolderService {
                 Folder folder = new Folder(folderName, user); // 새로운 폴더를 만들어주기 위한 folderName, user를 넣어주지 않아 계속해서 폴더명 중복이 발생했다.
                 folderList.add(folder);
             } else {
-                throw new IllegalArgumentException("폴더명이 중복되었습니다.");
+                throw new IllegalArgumentException("중복된 폴더명을 제거해주세요! 폴더명: " + folderName);
             }
         }
 
